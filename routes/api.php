@@ -35,8 +35,15 @@ Route::namespace('Api')->group(function(){
 	// Email
 	Route::get('emails', 'EmailController@index');
 	Route::post('emails/store', 'EmailController@store');
-	// Route::get('emails/show/{post}', 'EmailController@show');
-	// Route::post('emails/update/{post}', 'PostController@update');
-	// Route::post('emails/destroy/{post}', 'PostController@destroy');
+	// Route::get('emails/show/{email}', 'EmailController@show');
+	// Route::post('emails/update/{email}', 'PostController@update');
+	// Route::post('emails/destroy/{email}', 'PostController@destroy');
+
+	// Feed
+	Route::get('feeds', 'FeedController@index');
+	Route::post('feeds/store', 'FeedController@store');
+	Route::get('feeds/show/{feed}', 'FeedController@show');
+	Route::post('feeds/update/{feed}', 'FeedController@update');
+	Route::post('feeds/destroy/{feed}', 'FeedController@destroy');
 
 });

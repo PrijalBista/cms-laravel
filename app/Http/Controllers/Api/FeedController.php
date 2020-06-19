@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Email;
+use App\Feed;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class EmailController extends Controller
+class FeedController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class EmailController extends Controller
      */
     public function index()
     {
-        return Email::all();
+        return Feed::all();
     }
 
     /**
@@ -27,13 +27,11 @@ class EmailController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'subject' => 'required|string|max:255',
-            'message' => 'required|string',
+            'title' => 'required|string|max:255',
+            'content' => 'required|string'
         ]);
 
-        Email::create($validatedData);
+        Feed::create($validatedData);
 
         return response()->json(null, 200);
     }
@@ -41,31 +39,29 @@ class EmailController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Email  $email
+     * @param  \App\Feed  $feed
      * @return \Illuminate\Http\Response
      */
-    public function show(Email $email)
+    public function show(Feed $feed)
     {
-        return $email;
+        return $feed;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Email  $email
+     * @param  \App\Feed  $feed
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Email $email)
+    public function update(Request $request, Feed $feed)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'subject' => 'required|string|max:255',
-            'message' => 'required|string',
+            'title' => 'required|string|max:255',
+            'content' => 'required|string'
         ]);
 
-        $email->update($validatedData);
+        $feed->update($validatedData);
 
         return response()->json(null, 200);
     }
@@ -73,12 +69,14 @@ class EmailController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Email  $email
+     * @param  \App\Feed  $feed
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Email $email)
+    public function destroy(Feed $feed)
     {
-        $email->delete();
+
+        $feed->delete();
+
         return response()->json(null, 200);
     }
 }
