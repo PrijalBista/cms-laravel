@@ -31,4 +31,12 @@ Route::namespace('Api')->group(function(){
 
 	Route::post('posts/destroy/{post}', 'PostController@destroy');
 
+
+	// Email
+	Route::get('emails', 'EmailController@index');
+	Route::post('emails/store', 'EmailController@store');
+	// Route::get('emails/show/{post}', 'EmailController@show');
+	// Route::post('emails/update/{post}', 'PostController@update');
+	// Route::post('emails/destroy/{post}', 'PostController@destroy');
+
 });
