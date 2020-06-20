@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Feed;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class FeedController extends Controller
 {
@@ -28,10 +29,16 @@ class FeedController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'required|string'
+            'content' => 'required|string',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        Feed::create($validatedData);
+        $newFeed = Feed::create(Arr::except($validatedData, 'images'));
+
+        // Handle post photos upload
+        if($request->has('images')) {
+            $newFeed->storeUploadedImages($request->images, 'feed_images');
+        }
 
         return response()->json(null, 200);
     }
@@ -44,6 +51,7 @@ class FeedController extends Controller
      */
     public function show(Feed $feed)
     {
+        $feed->photos;
         return $feed;
     }
 
@@ -58,10 +66,23 @@ class FeedController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'required|string'
+            'content' => 'required|string',
+            'items' => 'array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        $feed->update($validatedData);
+        $feed->update(Arr::except($validatedData,['items', 'images']));
+
+        // Handle feed photos upload/update
+        // delete images if deleted
+        // items is present if photos are present (always)
+        // items can be absent when all photos are deleted i.e no photos left
+        $feed->deleteUploadedImagesExceptPassedImageNames($request->items);
+
+        // If additional images are passed then insert them
+        if($request->has('images')) {
+            $feed->storeUploadedImages($request->images, 'feed_images');
+        }
 
         return response()->json(null, 200);
     }
@@ -74,9 +95,8 @@ class FeedController extends Controller
      */
     public function destroy(Feed $feed)
     {
-
-        $feed->delete();
-
+        $feed->delete(); // all Photos related to $feed models will be automatically deleted because of the closure event listener added in Feed Model through HasPhoto trait.
+        
         return response()->json(null, 200);
     }
 }
