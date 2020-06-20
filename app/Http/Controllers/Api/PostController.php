@@ -17,7 +17,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return Post::with('photos')->get();
+        return Post::all();
     }
 
     /**
@@ -39,7 +39,7 @@ class PostController extends Controller
 
         // Handle post photos upload
         if($request->has('images')) {
-            $this->storeUploadedImages($newPost, $request->images, 'post_images');
+            $newPost->storeUploadedImages($request->images, 'post_images');
         }
 
         return response()->json(null, 200);
@@ -70,20 +70,17 @@ class PostController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'items' => 'array|present',
+            'items' => 'array',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         $post->update(Arr::except($validatedData, ['images', 'items']));
 
-        // Handle post photos upload/update
-        // delete images if deleted
-        if($request->has('items')) {
-            $this->deleteUploadedImages($post, $request->items);
-        }
-        // If additional images are there then insert them
+        $post->deleteUploadedImagesExceptPassedImageNames($request->items);
+
+        // If additional images are passed then insert them
         if($request->has('images')) {
-            $this->storeUploadedImages($post, $request->images, 'post_images');
+            $post->storeUploadedImages($request->images, 'post_images');
         }
 
         return response()->json(null, 200);
@@ -97,53 +94,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        $post->photos()->delete();
-        $post->delete();
 
+        $post->delete();
         return response()->json(null, 200);
     }
-
-    protected function storeUploadedImages($post, $images, $folderName = 'images') {
-
-        foreach ($images as $image) {
-
-            $title = $image->getClientOriginalName();
-
-            // make title unique using time() and rand()
-            $filename = pathinfo($title, PATHINFO_FILENAME);
-            $filename = (strlen($filename) > 10) ? substr($filename, 0, 10) : $filename; // only take 10chars from filename
-            $extension = pathinfo($title, PATHINFO_EXTENSION);
-            $title =  $filename . time() . rand(10, 999) . '.' . $extension;
-
-            $url = $image->store($folderName, 'public');
-
-            // Add new record in photos
-            $post->photos()->create([
-                'title' => $title,
-                'url' => $url,
-            ]);
-        }
-
-        return true;
-    }
-
-    protected function deleteUploadedImages($post, $items) {
-
-        $post->photos()->whereNotIn('title', $items)->delete();
-        return true;
-    }
-
-    // protected function updateUploadedImages($post, $newImages, $folderName = 'images') {
-        
-    //     // TODO : optimize this method to only delete phots which are updated.
-    //     // This can be done by first matching the upload file name and photo->name
-    //     // Then extension (jpg, png) , size matching.
-
-    //     // delete all photos uploaded previously
-    //     $post->photos()->delete();
-
-    //     // reupload all new photos 
-    //     return $this->storeUploadedImages($post, $newImages, $folderName);
-    // }
-
 }
+// DONE ? TEST
