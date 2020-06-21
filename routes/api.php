@@ -53,5 +53,7 @@ Route::namespace('Api')->group(function(){
 	Route::post('photos/update/{photo}', 'PhotoController@update');
 	Route::post('photos/destroy/{photo}', 'PhotoController@destroy');
 
+	// Dashboard
+	Route::get('dashboard', 'DashboardController@getCounts');
 
 });
