@@ -55,5 +55,7 @@ Route::namespace('Api')->group(function(){
 
 	// Dashboard
 	Route::get('dashboard', 'DashboardController@getCounts');
+	Route::get('posts/page', 'DashboardController@paginatedPosts');
+	Route::get('feeds/page', 'DashboardController@paginatedFeeds');
 
 });

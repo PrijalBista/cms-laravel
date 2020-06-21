@@ -12,15 +12,26 @@ use App\Photo;
 
 class DashboardController extends Controller
 {
-    
-    public function getCounts() {
 
-    	return response()->json([
-    		'email' => Email::count(),
-    		'posts' => Post::count(),
-    		'feeds' => Feed::count(),
-    		'photos' => Photo::count(),
+	public function getCounts() {
 
-    	], 200);
-    }
+		return response()->json([
+			'emails' => Email::count(),
+			'posts' => Post::count(),
+			'feeds' => Feed::count(),
+			'photos' => Photo::count(),
+
+		], 200);
+	}
+
+
+
+	public function paginatedPosts() {
+		return Post::paginate(6);
+	}
+
+	public function paginatedFeeds() {
+		return Feed::paginate(6);
+	}
+
 }
