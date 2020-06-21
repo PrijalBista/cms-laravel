@@ -37,7 +37,7 @@ class FeedController extends Controller
 
         // Handle post photos upload
         if($request->has('images')) {
-            $newFeed->storeUploadedImages($request->images, 'feed_images');
+            $newFeed->storeUploadedImages($request->images, 'feed_images', 'NewsFeed');
         }
 
         return response()->json(null, 200);
@@ -81,7 +81,7 @@ class FeedController extends Controller
 
         // If additional images are passed then insert them
         if($request->has('images')) {
-            $feed->storeUploadedImages($request->images, 'feed_images');
+            $feed->storeUploadedImages($request->images, 'feed_images', 'NewsFeed');
         }
 
         return response()->json(null, 200);

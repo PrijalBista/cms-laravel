@@ -39,7 +39,7 @@ class PostController extends Controller
 
         // Handle post photos upload
         if($request->has('images')) {
-            $newPost->storeUploadedImages($request->images, 'post_images');
+            $newPost->storeUploadedImages($request->images, 'post_images', 'BlogPost');
         }
 
         return response()->json(null, 200);
@@ -80,7 +80,7 @@ class PostController extends Controller
 
         // If additional images are passed then insert them
         if($request->has('images')) {
-            $post->storeUploadedImages($request->images, 'post_images');
+            $post->storeUploadedImages($request->images, 'post_images', 'BlogPost');
         }
 
         return response()->json(null, 200);

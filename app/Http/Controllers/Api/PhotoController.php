@@ -17,7 +17,18 @@ class PhotoController extends Controller
 	 */
 	public function index()
 	{
-		return Photo::all();
+		$categories = Photo::distinct()->whereNotNull('category')->select('category')->get();
+
+		$category_array = [];
+
+		foreach($categories as $category) {
+			array_push($category_array, $category->category);
+		}
+
+		return [
+			'photos' => Photo::all(),
+			'categories' => $category_array,
+		];
 	}
 
 	/**
@@ -32,7 +43,7 @@ class PhotoController extends Controller
 		$validatedData = $request->validate([
 			'title' => 'string|max:255',
 			'images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-			'category' => 'string|max:255',
+			// 'category' => 'string|max:255',
 			'tags' => 'string|max:255',
 		]);
 
@@ -49,7 +60,8 @@ class PhotoController extends Controller
 			// Add record
 			$data['title'] = isset($validatedData['title']) ? $validatedData['title'] : $title;
 			$data['url'] = $url;
-			$data['category'] = isset($validatedData['category']) ? $validatedData['category'] : 'gallery';
+			// $data['category'] = isset($validatedData['category']) ? $validatedData['category'] : 'Gallery';
+			$data['category'] = 'Gallery';
 			$data['tags'] = isset($validatedData['tags']) ? $validatedData['tags'] : '';
 
 			Photo::create($data);
@@ -82,7 +94,7 @@ class PhotoController extends Controller
 		$validatedData = $request->validate([
 			'title' => 'string|max:255',
 			'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-			'category' => 'string|max:255',
+			// 'category' => 'string|max:255',
 			'tags' => 'string|max:255',
 		]);
 
@@ -101,9 +113,9 @@ class PhotoController extends Controller
 			$photo->title = $validatedData['title'];
 		}
 
-		if(isset($validatedData['category'])) {
-			$photo->category = $validatedData['category'];
-		}
+		// if(isset($validatedData['category'])) {
+		// 	$photo->category = $validatedData['category'];
+		// }
 
 		if(isset($validatedData['tags'])) {
 			$photo->tags = $validatedData['tags'];

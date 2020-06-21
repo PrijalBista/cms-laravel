@@ -16,7 +16,7 @@ trait HasPhoto {
 		return $this->morphMany('App\Photo', 'photoable');
 	}
 
-	public function storeUploadedImages($images, $folderName = 'images') {
+	public function storeUploadedImages($images, $folderName = 'images', $category) {
 
 		foreach ($images as $image) {
 
@@ -30,6 +30,7 @@ trait HasPhoto {
 			$this->photos()->create([
 				'title' => $title,
 				'url' => $url,
+				'category' => $category,
 			]);
 		}
 
