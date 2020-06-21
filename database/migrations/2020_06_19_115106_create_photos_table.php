@@ -17,9 +17,10 @@ class CreatePhotosTable extends Migration
             $table->id();
             $table->string('title')->nullable();
             $table->string('category')->nullable();// TODO
+            $table->string('tags')->nullable(); // TODO
             $table->string('url');
-            $table->unsignedBigInteger('photoable_id');
-            $table->string('photoable_type');
+            $table->unsignedBigInteger('photoable_id')->nullable();
+            $table->string('photoable_type')->nullable();
             $table->timestamps();
         });
     }

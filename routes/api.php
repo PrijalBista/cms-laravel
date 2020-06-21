@@ -46,4 +46,12 @@ Route::namespace('Api')->group(function(){
 	Route::post('feeds/update/{feed}', 'FeedController@update');
 	Route::post('feeds/destroy/{feed}', 'FeedController@destroy');
 
+	// Photo
+	Route::get('photos', 'PhotoController@index');
+	Route::post('photos/store', 'PhotoController@store');
+	Route::get('photos/show/{photo}', 'PhotoController@show');
+	Route::post('photos/update/{photo}', 'PhotoController@update');
+	Route::post('photos/destroy/{photo}', 'PhotoController@destroy');
+
+
 });

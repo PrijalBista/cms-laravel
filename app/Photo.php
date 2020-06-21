@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Photo extends Model
 {
 
-    protected $fillable = ['title', 'url', 'photoable_id', 'photoable_type'];
+    protected $fillable = ['title', 'url', 'photoable_id', 'photoable_type', 'category', 'tags', ];
 
     /**
      * The accessors to append to the model's array form.
