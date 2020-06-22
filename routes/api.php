@@ -73,4 +73,11 @@ Route::namespace('Api')->group(function(){
 	Route::post('vacancies/update/{vacancy}', 'VacancyController@update');
 	Route::post('vacancies/destroy/{vacancy}', 'VacancyController@destroy');
 
+	// Feedback
+	Route::get('feedbacks', 'FeedbackController@index');
+	Route::post('feedbacks/store', 'FeedbackController@store');
+	Route::get('feedbacks/show/{feedback}', 'FeedbackController@show');
+	Route::post('feedbacks/update/{feedback}', 'FeedbackController@update');
+	Route::post('feedbacks/destroy/{feedback}', 'FeedbackController@destroy');
+
 });
