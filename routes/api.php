@@ -66,4 +66,11 @@ Route::namespace('Api')->group(function(){
 	Route::post('jobs/update/{job}', 'JobController@update');
 	Route::post('jobs/destroy/{job}', 'JobController@destroy');
 
+	// Vacancy
+	Route::get('vacancies', 'VacancyController@index');
+	Route::post('vacancies/store', 'VacancyController@store');
+	Route::get('vacancies/show/{vacancy}', 'VacancyController@show');
+	Route::post('vacancies/update/{vacancy}', 'VacancyController@update');
+	Route::post('vacancies/destroy/{vacancy}', 'VacancyController@destroy');
+
 });
