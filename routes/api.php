@@ -94,4 +94,8 @@ Route::namespace('Api')->group(function(){
 	Route::post('projects/update/{project}', 'ProjectController@update');
 	Route::post('projects/destroy/{project}', 'ProjectController@destroy');
 
+	// Cover (Uses Photo Model)
+	Route::get('covers', 'CoverController@index');
+	Route::get('covers/show/{photo}', 'CoverController@show');
+	Route::post('covers/update/{photo}', 'CoverController@update');
 });
