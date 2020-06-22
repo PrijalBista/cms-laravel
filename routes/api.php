@@ -80,4 +80,11 @@ Route::namespace('Api')->group(function(){
 	Route::post('feedbacks/update/{feedback}', 'FeedbackController@update');
 	Route::post('feedbacks/destroy/{feedback}', 'FeedbackController@destroy');
 
+	// Carousel (Uses Photo Model)
+	Route::get('carousels', 'CarouselController@index');
+	Route::post('carousels/store', 'CarouselController@store');
+	Route::get('carousels/show/{photo}', 'CarouselController@show');
+	Route::post('carousels/update/{photo}', 'CarouselController@update');
+	Route::post('carousels/destroy/{photo}', 'CarouselController@destroy');
+
 });
