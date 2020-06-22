@@ -10,7 +10,7 @@ class Job extends Model
 
 	use HasPhoto;
 
-    protected $fillable = ['title', 'lastDate', 'offeredSalary', 'offeredSalary', 'location', 'industry', 'experience', 'content' ];
+    protected $fillable = ['title', 'lastDate', 'offeredSalary', 'careerLevel', 'location', 'industry', 'experience', 'content' ];
 
 
 }

@@ -58,4 +58,12 @@ Route::namespace('Api')->group(function(){
 	Route::get('posts/page', 'DashboardController@paginatedPosts');
 	Route::get('feeds/page', 'DashboardController@paginatedFeeds');
 
+
+	// Job
+	Route::get('jobs', 'JobController@index');
+	Route::post('jobs/store', 'JobController@store');
+	Route::get('jobs/show/{job}', 'JobController@show');
+	Route::post('jobs/update/{job}', 'JobController@update');
+	Route::post('jobs/destroy/{job}', 'JobController@destroy');
+
 });
