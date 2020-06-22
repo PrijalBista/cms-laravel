@@ -87,4 +87,11 @@ Route::namespace('Api')->group(function(){
 	Route::post('carousels/update/{photo}', 'CarouselController@update');
 	Route::post('carousels/destroy/{photo}', 'CarouselController@destroy');
 
+	// Project
+	Route::get('projects', 'ProjectController@index');
+	Route::post('projects/store', 'ProjectController@store');
+	Route::get('projects/show/{project}', 'ProjectController@show');
+	Route::post('projects/update/{project}', 'ProjectController@update');
+	Route::post('projects/destroy/{project}', 'ProjectController@destroy');
+
 });
