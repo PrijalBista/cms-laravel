@@ -10,6 +10,9 @@ use App\Post;
 use App\Feed;
 use App\Photo;
 use App\Job;
+use App\Vacancy;
+use App\Feedback;
+use App\Project;
 
 class DashboardController extends Controller
 {
@@ -22,6 +25,10 @@ class DashboardController extends Controller
 			'feeds' => Feed::count(),
 			'photos' => Photo::count(),
 			'jobs' => Job::count(),
+			'vacancies' => Vacancy::count(),
+			'feedbacks' => Feedback::count(),
+			'projects' => Project::count(),
+			'carousels' => Photo::where('category', 'Carousel')->count(),
 		], 200);
 	}
 
