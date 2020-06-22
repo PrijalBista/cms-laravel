@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             PostSeeder::class,
             EmailSeeder::class,
             FeedSeeder::class,
+            CoverSeeder::class,
         ]);
     }
 }
