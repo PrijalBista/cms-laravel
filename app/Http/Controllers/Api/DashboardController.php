@@ -9,6 +9,7 @@ use App\Email;
 use App\Post;
 use App\Feed;
 use App\Photo;
+use App\Job;
 
 class DashboardController extends Controller
 {
@@ -20,7 +21,7 @@ class DashboardController extends Controller
 			'posts' => Post::count(),
 			'feeds' => Feed::count(),
 			'photos' => Photo::count(),
-
+			'jobs' => Job::count(),
 		], 200);
 	}
 
