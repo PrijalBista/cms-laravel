@@ -98,4 +98,11 @@ Route::namespace('Api')->group(function(){
 	Route::get('covers', 'CoverController@index');
 	Route::get('covers/show/{photo}', 'CoverController@show');
 	Route::post('covers/update/{photo}', 'CoverController@update');
+
+	// Project
+	Route::get('shares', 'ShareController@index');
+	Route::post('shares/store', 'ShareController@store');
+	Route::get('shares/show/{share}', 'ShareController@show');
+	Route::post('shares/update/{share}', 'ShareController@update');
+	Route::post('shares/destroy/{share}', 'ShareController@destroy');
 });

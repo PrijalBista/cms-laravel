@@ -36,8 +36,8 @@ trait HasMedia {
 			$this->medias()->create([
 				'title' => $title,
 				'url' => $url,
-				'file_name' => $filename,
-				'mimeType' => $mimeType,
+				'file_name' => $fileName,
+				'mime_type' => $mimeType,
 				'collection_name' => $collectionName,
 			]);
 		}
@@ -45,7 +45,7 @@ trait HasMedia {
 		return true;
 	}
 
-	public function deleteUploadedMediaExceptPassedMediaNames($items=[]) {
+	public function deleteUploadedMediasExceptPassedMediaNames($items=[]) {
 
 		// [2] Without Observer mass delete unwanted medias with a single query
 		// $medias = $this->medias()->whereNotIn('medias.title', $items)->get();
@@ -59,10 +59,10 @@ trait HasMedia {
 
 		$items = $items ? $items : []; // set $items to empty array if null value passed
 
-		$medias = $this->medias()->whereNotIn('medias.title', $items)->get();
+		$medias = $this->medias()->whereNotIn('media.title', $items)->get();
 
 		// delete the unwanted medias records form db in a single query which is better but Observers wont work here
-	    $this->medias()->whereNotIn('medias.title', $items)->delete();
+	    $this->medias()->whereNotIn('media.title', $items)->delete();
 
 	    // then delete the medias file from storage
 		foreach($medias as $media) {
