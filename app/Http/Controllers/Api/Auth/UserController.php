@@ -94,7 +94,7 @@ class UserController extends Controller
 		if(!$appUser || !Hash::check($validatedData['password'], $appUser->password)) {
 
 			throw ValidationException::withMessages([
-				'email' => ['Invalid Username or Password !'],
+				'auth_fail' => ['Invalid Username or Password !'],
 			]);
 		}
 
