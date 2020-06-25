@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\CMS;
 
 use App\Http\Controllers\Controller;
-use App\Share;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use App\Media;
+use App\Post;
 use Illuminate\Support\Facades\Storage;
 
-class ShareController extends Controller
+class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +17,7 @@ class ShareController extends Controller
      */
     public function index()
     {
-        // return Share::all();
-        return Share::with('medias')->get();
+        return Post::all();
     }
 
     /**
@@ -30,18 +28,18 @@ class ShareController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'images.*' => 'mimes:jpeg,png,jpg,gif,zip,pdf|max:5120'
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        $newShare = Share::create(Arr::except($validatedData, 'images'));
+        $newPost = Post::create(Arr::except($validatedData, 'images'));
 
-        // Handle share media upload
+        // Handle post photos upload
         if($request->has('images')) {
-            $newShare->storeUploadedMedias($request->images, 'media_images');
+            $newPost->storeUploadedImages($request->images, 'post_images', 'BlogPost');
         }
 
         return response()->json(null, 200);
@@ -50,39 +48,39 @@ class ShareController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Share  $share
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Share $share)
+    public function show(Post $post)
     {
-        $share->medias;
-        return $share;
+        $post->photos;
+        return $post;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Share  $share
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Share $share)
+    public function update(Request $request, Post $post)
     {
-        
+
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'items' => 'array',
-            'images.*' => 'mimes:jpeg,png,jpg,gif,zip,pdf|max:5120'
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        $share->update(Arr::except($validatedData, ['images', 'items']));
+        $post->update(Arr::except($validatedData, ['images', 'items']));
 
-        $share->deleteUploadedMediasExceptPassedMediaNames($request->items);
+        $post->deleteUploadedImagesExceptPassedImageNames($request->items);
 
         // If additional images are passed then insert them
         if($request->has('images')) {
-            $share->storeUploadedMedias($request->images, 'media_images');
+            $post->storeUploadedImages($request->images, 'post_images', 'BlogPost');
         }
 
         return response()->json(null, 200);
@@ -91,22 +89,14 @@ class ShareController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Share  $share
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Share $share)
+    public function destroy(Post $post)
     {
-        $share->delete();
+
+        $post->delete();
         return response()->json(null, 200);
     }
-
- /**
-  * Remove the specified resource from storage.
-  *
-  * @param  \App\Media  $media
-  * @return \Illuminate\Http\Response Download
-  */   
-    public function downloadMedia(Media $media) {
-        return Storage::disk('public')->download($media->url);
-    }
 }
+// DONE ? TEST

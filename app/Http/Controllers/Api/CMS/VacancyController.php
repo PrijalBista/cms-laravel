@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\CMS;
 
-use App\Email;
 use App\Http\Controllers\Controller;
+use App\Vacancy;
 use Illuminate\Http\Request;
 
-class EmailController extends Controller
+class VacancyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class EmailController extends Controller
      */
     public function index()
     {
-        return Email::all();
+        return Vacancy::all();
     }
 
     /**
@@ -27,45 +27,43 @@ class EmailController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'subject' => 'required|string|max:255',
-            'message' => 'required|string',
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
         ]);
 
-        Email::create($validatedData);
+        Vacancy::create($validatedData);
 
         return response()->json(null, 200);
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Email  $email
+     * @param  \App\Vacancy  $vacancy
      * @return \Illuminate\Http\Response
      */
-    public function show(Email $email)
+    public function show(Vacancy $vacancy)
     {
-        return $email;
+        return $vacancy;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Email  $email
+     * @param  \App\Vacancy  $vacancy
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Email $email)
+    public function update(Request $request, Vacancy $vacancy)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'subject' => 'required|string|max:255',
-            'message' => 'required|string',
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'complete' => 'boolean',
         ]);
 
-        $email->update($validatedData);
+        $vacancy->update($validatedData);
 
         return response()->json(null, 200);
     }
@@ -73,12 +71,12 @@ class EmailController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Email  $email
+     * @param  \App\Vacancy  $vacancy
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Email $email)
+    public function destroy(Vacancy $vacancy)
     {
-        $email->delete();
+        $vacancy->delete();
         return response()->json(null, 200);
     }
 }

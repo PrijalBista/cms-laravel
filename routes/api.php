@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::namespace('Api')->group(function(){
+Route::namespace('Api\CMS')->group(function(){
 
 	Route::middleware('auth:sanctum')->group(function(){
 		// Post

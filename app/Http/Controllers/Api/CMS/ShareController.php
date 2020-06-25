@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\CMS;
 
-use App\Feedback;
 use App\Http\Controllers\Controller;
+use App\Share;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use App\Media;
+use Illuminate\Support\Facades\Storage;
 
-class FeedbackController extends Controller
+class ShareController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +18,8 @@ class FeedbackController extends Controller
      */
     public function index()
     {
-        return Feedback::all();
+        // return Share::all();
+        return Share::with('medias')->get();
     }
 
     /**
@@ -27,18 +30,18 @@ class FeedbackController extends Controller
      */
     public function store(Request $request)
     {
-
+        
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+            'images.*' => 'mimes:jpeg,png,jpg,gif,zip,pdf|max:5120'
         ]);
 
-        $newFeedback = Feedback::create(Arr::except($validatedData, 'images'));
+        $newShare = Share::create(Arr::except($validatedData, 'images'));
 
-        // Handle post photos upload
+        // Handle share media upload
         if($request->has('images')) {
-            $newFeedback->storeUploadedImages($request->images, 'feedback_images', 'Feedback');
+            $newShare->storeUploadedMedias($request->images, 'media_images');
         }
 
         return response()->json(null, 200);
@@ -47,39 +50,39 @@ class FeedbackController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Feedback  $feedback
+     * @param  \App\Share  $share
      * @return \Illuminate\Http\Response
      */
-    public function show(Feedback $feedback)
+    public function show(Share $share)
     {
-        $feedback->photos;
-        return $feedback;
+        $share->medias;
+        return $share;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Feedback  $feedback
+     * @param  \App\Share  $share
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Feedback $feedback)
+    public function update(Request $request, Share $share)
     {
-
+        
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'items' => 'array',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+            'images.*' => 'mimes:jpeg,png,jpg,gif,zip,pdf|max:5120'
         ]);
 
-        $feedback->update(Arr::except($validatedData, ['images', 'items']));
+        $share->update(Arr::except($validatedData, ['images', 'items']));
 
-        $feedback->deleteUploadedImagesExceptPassedImageNames($request->items);
+        $share->deleteUploadedMediasExceptPassedMediaNames($request->items);
 
         // If additional images are passed then insert them
         if($request->has('images')) {
-            $feedback->storeUploadedImages($request->images, 'feedback_images', 'Feedback');
+            $share->storeUploadedMedias($request->images, 'media_images');
         }
 
         return response()->json(null, 200);
@@ -88,12 +91,22 @@ class FeedbackController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Feedback  $feedback
+     * @param  \App\Share  $share
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Feedback $feedback)
+    public function destroy(Share $share)
     {
-        $feedback->delete();
+        $share->delete();
         return response()->json(null, 200);
+    }
+
+ /**
+  * Remove the specified resource from storage.
+  *
+  * @param  \App\Media  $media
+  * @return \Illuminate\Http\Response Download
+  */   
+    public function downloadMedia(Media $media) {
+        return Storage::disk('public')->download($media->url);
     }
 }

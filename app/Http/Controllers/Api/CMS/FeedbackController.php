@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\CMS;
 
+use App\Feedback;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use App\Post;
-use Illuminate\Support\Facades\Storage;
 
-class PostController extends Controller
+class FeedbackController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +16,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return Post::all();
+        return Feedback::all();
     }
 
     /**
@@ -35,11 +34,11 @@ class PostController extends Controller
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        $newPost = Post::create(Arr::except($validatedData, 'images'));
+        $newFeedback = Feedback::create(Arr::except($validatedData, 'images'));
 
         // Handle post photos upload
         if($request->has('images')) {
-            $newPost->storeUploadedImages($request->images, 'post_images', 'BlogPost');
+            $newFeedback->storeUploadedImages($request->images, 'feedback_images', 'Feedback');
         }
 
         return response()->json(null, 200);
@@ -48,23 +47,23 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Feedback  $feedback
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show(Feedback $feedback)
     {
-        $post->photos;
-        return $post;
+        $feedback->photos;
+        return $feedback;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Feedback  $feedback
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, Feedback $feedback)
     {
 
         $validatedData = $request->validate([
@@ -74,13 +73,13 @@ class PostController extends Controller
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        $post->update(Arr::except($validatedData, ['images', 'items']));
+        $feedback->update(Arr::except($validatedData, ['images', 'items']));
 
-        $post->deleteUploadedImagesExceptPassedImageNames($request->items);
+        $feedback->deleteUploadedImagesExceptPassedImageNames($request->items);
 
         // If additional images are passed then insert them
         if($request->has('images')) {
-            $post->storeUploadedImages($request->images, 'post_images', 'BlogPost');
+            $feedback->storeUploadedImages($request->images, 'feedback_images', 'Feedback');
         }
 
         return response()->json(null, 200);
@@ -89,14 +88,12 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Feedback  $feedback
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy(Feedback $feedback)
     {
-
-        $post->delete();
+        $feedback->delete();
         return response()->json(null, 200);
     }
 }
-// DONE ? TEST
