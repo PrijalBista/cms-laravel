@@ -31,7 +31,8 @@ class ProjectController extends Controller
 		$validatedData = $request->validate([
 			'title' => 'required|string|max:255',
 			'content' => 'required|string',
-			'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+			'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'complete' => 'boolean',
 		]);
 
 		$newProject = Project::create(Arr::except($validatedData, 'images'));
@@ -70,7 +71,8 @@ class ProjectController extends Controller
 			'title' => 'required|string|max:255',
 			'content' => 'required|string',
 			'items' => 'array',
-			'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+			'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'complete' => 'boolean',
 		]);
 
 		$project->update(Arr::except($validatedData, ['images', 'items']));

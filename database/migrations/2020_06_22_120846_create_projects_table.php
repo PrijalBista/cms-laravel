@@ -17,6 +17,7 @@ class CreateProjectsTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
+            $table->boolean('complete')->default(0);
             $table->timestamps();
         });
     }

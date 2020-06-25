@@ -9,5 +9,5 @@ class Project extends Model
 {
 	use HasPhoto;
 
-    protected $fillable = ['title', 'content'];
+    protected $fillable = ['title', 'content', 'complete'];
 }
