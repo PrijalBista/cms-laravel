@@ -18,7 +18,8 @@ class ShareController extends Controller
      */
     public function index()
     {
-        return Share::all();
+        // return Share::all();
+        return Share::with('medias')->get();
     }
 
     /**
