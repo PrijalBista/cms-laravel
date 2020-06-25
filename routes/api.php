@@ -105,4 +105,15 @@ Route::namespace('Api')->group(function(){
 	Route::get('shares/show/{share}', 'ShareController@show');
 	Route::post('shares/update/{share}', 'ShareController@update');
 	Route::post('shares/destroy/{share}', 'ShareController@destroy');
+
+	// User
+	Route::get('users', 'Auth\UserController@index');
+	Route::post('users/store', 'Auth\UserController@store');
+	Route::get('users/show/{user}', 'Auth\UserController@show');
+	Route::post('users/update/{user}', 'Auth\UserController@update');
+	Route::post('users/destroy/{user}', 'Auth\UserController@destroy');
+
+	// Auth
+	Route::post('users/login', 'Auth\UserController@login');
+
 });
