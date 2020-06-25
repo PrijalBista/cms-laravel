@@ -106,4 +106,10 @@ class UserController extends Controller
 			'userEmailVerifiedAt' => $appUser->email_verified_at,
 		];
 	}
+
+	public function logout(Request $request) {
+		$request->user()->tokens()->delete();
+		return response()->json(null, 200);
+		// return response()->json('logout', 201);
+	}
 }

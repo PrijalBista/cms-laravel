@@ -115,5 +115,6 @@ Route::namespace('Api')->group(function(){
 
 	// Auth
 	Route::post('users/login', 'Auth\UserController@login');
+	Route::post('users/logout', 'Auth\UserController@logout')->middleware('auth:sanctum');
 
 });
