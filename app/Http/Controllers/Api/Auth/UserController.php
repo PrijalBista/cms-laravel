@@ -67,10 +67,10 @@ class UserController extends Controller
 	 * @param  \App\User  $user
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(User $user)
+	public function destroy(Request $request,User $user)
 	{
 		// stop deleting self account
-		$appUser = auth()->user();
+		$appUser = $request->user();
 		if($appUser && $appUser->email === $user->email) {
 			return response()->json(['message' => 'Unauthorized'], 401);
 		}
