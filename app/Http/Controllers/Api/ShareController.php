@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Share;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use App\Media;
+use Illuminate\Support\Facades\Storage;
 
 class ShareController extends Controller
 {
@@ -95,5 +97,15 @@ class ShareController extends Controller
     {
         $share->delete();
         return response()->json(null, 200);
+    }
+
+ /**
+  * Remove the specified resource from storage.
+  *
+  * @param  \App\Media  $media
+  * @return \Illuminate\Http\Response Download
+  */   
+    public function downloadMedia(Media $media) {
+        return Storage::disk('public')->download($media->url);
     }
 }

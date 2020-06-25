@@ -117,4 +117,5 @@ Route::namespace('Api')->group(function(){
 	});
 
 	Route::post('users/login', 'Auth\UserController@login');
+	Route::get('downloadmedia/{media}', 'ShareController@downloadMedia');
 });
